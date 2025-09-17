@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1 class="mb-4" style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; color: rgba(255,255,255,0.95);">Fill Details for {{ template.name }}</h1>
+    <form method="POST" action="{{ url_for('generate') }}" class="needs-validation animate__fadeInUp" novalidate>
+        <input type="hidden" name="template_id" value="{{ template.id }}">
+        <div class="row g-4">
+            {% for name in placeholder_names %}
+                <div class="col-md-6">
+                    <label for="{{ name }}" class="form-label" style="color: rgba(255,255,255,0.85); font-weight: 500; letter-spacing: 0.03em;">{{ name.replace('.', ' ').replace('_', ' ')|title }}</label>
+                    {% if "date" in name.lower() %}
+                        <input type="date" class="form-control" id="{{ name }}" name="{{ name }}" 
+                               style="background: rgba(30, 41, 59, 0.8) !important;" required>
+                    {% else %}
+                        <input type="text" class="form-control" id="{{ name }}" name="{{ name }}" 
+                               placeholder="Enter your {{ name.replace('.', ' ').replace('_', ' ') }}"
+                               style="background: rgba(30, 41, 59, 0.8) !important;"
+                               required>
+                    {% endif %}
+                    <div class="invalid-feedback" style="font-size: 0.9rem; margin-top: -0.5rem;">Please provide {{ name.replace('.', ' ').replace('_', ' ')|lower }}.</div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary w-100" style="padding: 1rem; font-size: 1.1rem; letter-spacing: 0.05em;">
+                    Generate and Download
+                </button>
+            </div>
+            <div class="col-md-4">
+                <a href="/" class="btn btn-secondary w-100" style="padding: 1rem; font-size: 1.1rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15);">
+                    Back to Home
+                </a>
+            </div>
+            <div class="col-md-4">
+                <a href="https://convertio.co/docx-pdf/" target="_blank" class="btn btn-primary w-100" style="padding: 1rem; font-size: 1.1rem; background: linear-gradient(45deg, #6dd5ed, #2a8bf2); color: white; border: none;">
+                    Convert to PDF
+                </a>
+            </div>
+        </div>
+    </form>
+
+    <script>
+        (function() {
+            'use strict';
+            const forms = document.querySelectorAll('.needs-validation');
+            forms.forEach(form => {
+                form.addEventListener('submit', e => {
+                    if (!form.checkValidity()) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        form.querySelectorAll('.form-control:invalid').forEach(input => {
+                            input.style.animation = 'shake 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
+                            setTimeout(() => input.style.animation = '', 500);
+                        });
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+
+            // Add custom shake animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes shake {
+                    0%, 100% { transform: translateX(0); }
+                    25% { transform: translateX(-8px); }
+                    50% { transform: translateX(8px); }
+                    75% { transform: translateX(-4px); }
+                }
+            `;
+            document.head.appendChild(style);
+        })();
+
+        document.querySelectorAll('.form-control').forEach(input => {
+            input.addEventListener('input', () => {
+                input.style.transform = input.value ? 'scale(1.02)' : 'scale(1)';
+                input.style.boxShadow = input.value ? '0 4px 15px rgba(34, 197, 94, 0.2)' : 'none';
+                input.classList.add('animate__pulse');
+                setTimeout(() => input.classList.remove('animate__pulse'), 300);
+            });
+        });
+    </script>
+{% endblock %}

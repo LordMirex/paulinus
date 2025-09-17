@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="animate__fadeInUp">
+    <h1 class="mb-4" style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem;">Document Generator</h1>
+
+    <!-- Document Type Dropdown -->
+    <div class="mb-4">
+        <label for="type_select" class="form-label">Document Type</label>
+        <select id="type_select" class="form-select" style="background: rgba(255, 255, 255, 0.08); border-color: var(--muted);">
+            <option value="">Select a type</option>
+            {% for type in types %}
+                <option value="{{ type }}">{{ type|capitalize }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- Template Dropdown -->
+    <div class="mb-4">
+        <label for="template_select" class="form-label">Template</label>
+        <select id="template_select" class="form-select" style="background: rgba(255, 255, 255, 0.08); border-color: var(--muted);">
+            <option value="">Select a template</option>
+        </select>
+    </div>
+
+    <!-- Error Message -->
+    <div id="error_message" class="alert alert-danger rounded-3 p-2 mb-4 d-none"></div>
+
+    <!-- Recent Documents Table -->
+    <h2 class="mt-5 mb-4" style="font-family: 'Cormorant Garamond', serif; font-size: 2rem;">Recent Documents</h2>
+    <div class="mt-4 mb-4">
+        <a href="https://convertio.co/docx-pdf/" target="_blank" style="display: inline-block; padding: 0.6rem 1.5rem; background: linear-gradient(45deg, #6dd5ed, #2a8bf2); color: white; border-radius: 4px; text-decoration: none; transition: all 0.3s ease; border: 1px solid rgba(109, 213, 237, 0.3); font-size: 1rem;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 4px 15px rgba(109, 213, 237, 0.3)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">Convert to PDF</a>
+    </div>
+    <div class="table-responsive">
+    <table class="table table-dark table-hover rounded-3 overflow-hidden">
+    <thead>
+        <tr>
+            <th>File Name</th>
+            <th>Document Type</th>
+            <th>Download</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for doc in recent_docs %}
+        <tr style="transition: all 0.3s ease; border-bottom: 1px solid rgba(255,255,255,0.05);"
+            onmouseover="this.style.background='rgba(255,255,255,0.03)'; this.style.boxShadow='0 4px 15px rgba(0,0,0,0.2)'"
+            onmouseout="this.style.background='transparent'; this.style.boxShadow='none'">
+            <td style="padding: 12px 15px; color: rgba(255,255,255,0.9); font-size: 0.95rem; border-right: 1px solid rgba(255,255,255,0.05);">{{ doc.file_path }}</td>
+            <td style="padding: 12px 15px; color: rgba(255,255,255,0.8); font-size: 0.9rem; border-right: 1px solid rgba(255,255,255,0.05);">{{ doc.template.type|capitalize }}</td>
+            <td style="padding: 12px 15px;">
+                <a href="{{ url_for('download', document_id=doc.id) }}"
+                   style="display: inline-block; padding: 0.4rem 1.2rem; background: linear-gradient(45deg, #6dd5ed, #2a8bf2); color: white; border-radius: 4px; text-decoration: none; transition: all 0.3s ease; border: 1px solid rgba(109, 213, 237, 0.3); font-size: 0.85rem;"
+                   onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 4px 15px rgba(109, 213, 237, 0.3)'"
+                   onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">Download</a>
+            </td>
+            <td style="padding: 12px 15px;">
+                <a href="{{ url_for('delete', document_id=doc.id) }}"
+                   onclick="return confirm('Are you sure you want to delete this document?')"
+                   style="display: inline-block; padding: 0.4rem 1.2rem; background: linear-gradient(45deg, #ff6b6b, #ff4757); color: white; border-radius: 4px; text-decoration: none; transition: all 0.3s ease; border: 1px solid rgba(255, 107, 107, 0.3); font-size: 0.85rem;"
+                   onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 4px 15px rgba(255, 107, 107, 0.3)'"
+                   onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+    </div>
+
+    <!-- Pagination -->
+    <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item {% if page <= 1 %}disabled{% endif %}">
+                <a class="page-link" href="{{ url_for('index', page=page-1) if page > 1 else '#' }}" style="color: var(--text); background: rgba(255, 255, 255, 0.08); border-color: var(--muted);">Previous</a>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link" style="color: var(--text); background: rgba(255, 255, 255, 0.08); border-color: var(--muted);">Page {{ page }} of {{ total_pages }}</span>
+            </li>
+            <li class="page-item {% if page >= total_pages %}disabled{% endif %}">
+                <a class="page-link" href="{{ url_for('index', page=page+1) if page < total_pages else '#' }}" style="color: var(--text); background: rgba(255, 255, 255, 0.08); border-color: var(--muted);">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#type_select').change(function() {
+        var type = $(this).val();
+        $('#template_select').html('<option value="">Select a template</option>');
+        $('#error_message').removeClass('d-block').addClass('d-none').text('');
+        if (!type) return;
+
+        $.get('/templates', {type: type}, function(data) {
+            if (data.error) {
+                $('#error_message').text(data.error).removeClass('d-none').addClass('d-block');
+                return;
+            }
+            var options = '<option value="">Select a template</option>';
+            data.forEach(function(template) {
+                options += '<option value="' + template.id + '">' + template.name + '</option>';
+            });
+            $('#template_select').html(options);
+        }).fail(function() {
+            $('#error_message').text('Failed to load templates').removeClass('d-none').addClass('d-block');
+        });
+    });
+
+    $('#template_select').change(function() {
+        var id = $(this).val();
+        if (id) window.location.href = '/create/' + id;
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyTypist - Elegant Document Creator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Cormorant+Garamond:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary: #0f172a;
+            --secondary: #1e293b;
+            --accent: #f43f5e;
+            --success: #22c55e;
+            --text: #f1f5f9;
+            --muted: #94a3b8;
+            --bg-light: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(145deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--text);
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: rgba(15, 23, 42, 0.95);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--bg-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            margin-right: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover {
+            transform: rotate(360deg);
+        }
+
+        .navbar-brand {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .navbar-brand:hover {
+            color: var(--accent);
+        }
+
+        .nav-btn {
+            background: var(--accent);
+            border-radius: 25px;
+            padding: 0.6rem 1.8rem;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: #fb7185;
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(244, 63, 94, 0.4);
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 3rem;
+            border-radius: 20px;
+            margin: 4rem auto;
+            max-width: 1300px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        .form-label {
+            font-weight: 500;
+        }
+
+
+
+/* Update form control styles */
+.form-control, .form-select {
+    background: rgba(30, 41, 59, 0.7) !important;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #ffffff !important;
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+}
+
+.form-control::placeholder {
+    color: rgba(255,255,255,0.6) !important;
+    font-weight: 300;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus::placeholder {
+    opacity: 0.5;
+    transform: translateX(5px);
+}
+
+.form-control.filled {
+    background: rgba(34, 197, 94, 0.15) !important;
+    border-color: rgba(34, 197, 94, 0.5);
+    box-shadow: 0 0 15px rgba(34, 197, 94, 0.2);
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--success);
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+    background: rgba(30, 41, 59, 0.9) !important;
+    outline: none;
+}
+
+/* Add input autofill styling */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #ffffff !important;
+    -webkit-box-shadow: 0 0 0px 1000px rgba(30, 41, 59, 0.7) inset;
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Enhance date input styling */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    opacity: 0.8;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+    opacity: 1;
+}
+
+
+
+
+        .btn-primary {
+            background: var(--accent);
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #fb7185;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(244, 63, 94, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: #334155;
+            border-color: #334155;
+        }
+
+        .btn-secondary:hover {
+            background-color: #475569;
+            border-color: #475569;
+        }
+
+        .invalid-feedback {
+            color: #ff6b6b;
+        }
+
+        .table {
+            background: transparent;
+            color: var(--text);
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .table-dark {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        footer {
+            background: rgba(15, 23, 42, 0.95);
+            padding: 3rem 2rem;
+            color: var(--muted);
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            margin-top: auto;
+        }
+
+        footer a {
+            color: var(--text);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--accent);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate__fadeInUp {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            .container { padding: 2rem; margin: 2rem 1rem; }
+            header { padding: 1rem; }
+            .btn { width: 100%; margin: 0.5rem 0; }
+            .logo { width: 40px; height: 40px; }
+            .navbar-brand { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="/" class="navbar-brand">
+            <svg class="logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="var(--accent)" stroke-width="2"/>
+                <path d="M2 17L12 22L22 17" stroke="var(--accent)" stroke-width="2"/>
+                <path d="M2 12L12 17L22 12" stroke="var(--accent)" stroke-width="2"/>
+            </svg>
+            MyTypist
+        </a>
+        <div>
+            {% if request.path == '/' %}
+                <a href="/admin?key={{ admin_key }}" class="btn nav-btn">Admin Portal</a>
+            {% elif '/admin/edit' in request.path %}
+                <a href="/admin?key={{ admin_key }}" class="btn nav-btn">Back to Admin</a>
+            {% elif 'admin' in request.path %}
+                <a href="/" class="btn nav-btn">Home</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer class="text-center">
+        <div class="container">
+            <h3 style="font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--text);">MyTypist</h3>
+            <div class="d-flex justify-content-center gap-4 mb-3">
+                <a href="#">About</a>
+                <a href="#">Contact</a>
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+            </div>
+            <p>LordMirex  © 2025 MyTypist. Crafted by Grok.Ai</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            header.style.boxShadow = window.scrollY > 50 ? '0 10px 20px rgba(0, 0, 0, 0.3)' : 'none';
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', (e) => {
+                e.preventDefault();
+                document.querySelector(anchor.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'91a804483dbf44e5',t:'MTc0MDk5MzE5NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

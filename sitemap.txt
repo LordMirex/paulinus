@@ -1,0 +1,57 @@
+
+
+    Directory: C:\LordMirex\Programming\MyTypist\Prototype
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+d-----          5/2/2025  11:18 AM                db
+d-----          5/2/2025  10:33 AM                generated
+d-----         3/17/2025   2:01 AM                templates
+d-----         3/10/2025   9:47 AM                uploads
+d-----          4/3/2025   6:38 PM                wa
+d-----          3/9/2025   2:20 PM                __pycache__
+-a----          3/9/2025   2:20 PM          18374 app.py
+-a----          3/6/2025   4:52 PM             99 requirements.txt
+
+
+    Directory: C:\LordMirex\Programming\MyTypist\Prototype\db
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----          5/2/2025  11:18 AM          16384 db.sqlite
+
+
+    Directory: C:\LordMirex\Programming\MyTypist\Prototype\templates
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----          3/6/2025   4:49 PM           8280 admin.html
+-a----          3/6/2025   4:49 PM           9814 base.html
+-a----          3/6/2025   4:49 PM           4303 create.html
+-a----          3/6/2025   4:49 PM           7281 edit.html
+-a----          3/6/2025   4:49 PM            470 error.html
+-a----         3/17/2025   2:01 AM           6644 index.html
+
+
+    Directory: C:\LordMirex\Programming\MyTypist\Prototype\uploads
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----         3/10/2025   9:48 AM          19622 Age_Declaration.docx
+-a----          3/9/2025  12:15 PM          43016 MyTypist_Offical_Summary1_-_Copy.docx
+-a----         3/13/2025   7:43 AM          20385 Uniben_Acceptance_Letter.docx
+-a----         3/10/2025   9:49 AM          15204 Uniben_Good_Conduct.docx
+-a----         3/10/2025   9:47 AM          14984 Uniben_Guarantor_Letter.docx
+
+
+    Directory: C:\LordMirex\Programming\MyTypist\Prototype\__pycache__
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----          3/6/2025   4:50 PM          14302 app.cpython-310.pyc
+-a----          3/9/2025   2:20 PM          15334 app.cpython-38.pyc

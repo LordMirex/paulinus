@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1 class="mb-4" style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem;">Edit Template: {{ template.name }}</h1>
+    <form method="POST" action="{{ url_for('update_template', template_id=template.id) }}" class="needs-validation animate__fadeInUp" novalidate>
+        <input type="hidden" name="key" value="{{ admin_key }}">
+        <div class="mb-4">
+            <label for="name" class="form-label" style="color: var(--text);">Template Name</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ template.name }}" required style="background: rgba(255, 255, 255, 0.08); border-color: var(--muted); color: var(--text);">
+        </div>
+        <div class="mb-4">
+            <label for="type" class="form-label" style="color: var(--text);">Document Type</label>
+            <select class="form-select" id="type" name="type" required style="background: rgba(255, 255, 255, 0.08); border-color: var(--muted); color: var(--text);">
+                <option value="letter" {% if template.type == 'letter' %}selected{% endif %}>Letter</option>
+                <option value="affidavit" {% if template.type == 'affidavit' %}selected{% endif %}>Affidavit</option>
+            </select>
+        </div>
+        <div class="mb-4">
+            <label for="font_family" class="form-label" style="color: var(--text);">Font Family</label>
+            <select class="form-select" id="font_family" name="font_family" style="background: rgba(255, 255, 255, 0.08); border-color: var(--muted); color: var(--text);">
+                <option value="Times New Roman" {% if template.font_family == 'Times New Roman' %}selected{% endif %}>Times New Roman</option>
+                <option value="Arial" {% if template.font_family == 'Arial' %}selected{% endif %}>Arial</option>
+                <option value="Bookman Old Style" {% if template.font_family == 'Bookman Old Style' %}selected{% endif %}>Bookman Old Style</option>
+                <option value="Calibri" {% if template.font_family == 'Calibri' %}selected{% endif %}>Calibri</option>
+            </select>
+        </div>
+        <div class="mb-4">
+            <label for="font_size" class="form-label" style="color: var(--text);">Font Size</label>
+            <input type="number" class="form-control" id="font_size" name="font_size" value="{{ template.font_size }}" min="8" max="72" required style="background: rgba(255, 255, 255, 0.08); border-color: var(--muted); color: var(--text);">
+        </div>
+
+        <h2 class="mt-5 mb-4" style="font-family: 'Cormorant Garamond', serif; font-size: 2rem;">Placeholders</h2>
+        <div class="table-responsive">
+            <table class="table table-dark table-bordered rounded-3 overflow-hidden">
+                <thead>
+                    <tr>
+                        <th>Placeholder</th>
+                        <th>Bold</th>
+                        <th>Italic</th>
+                        <th>Underline</th>
+                        <th>Casing</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for ph in placeholders %}
+                        <tr class="animate__fadeInUp" style="animation-delay: {{ loop.index * 0.1 }}s;" onmouseover="this.style.background='rgba(255,255,255,0.1)'" onmouseout="this.style.background='transparent'">
+                            <td>{{ ph.name }}</td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-toggle {% if ph.bold %}btn-success{% else %}btn-danger{% endif %}" onclick="toggle(this, 'bold_{{ ph.id }}')">
+                                    {% if ph.bold %}On{% else %}Off{% endif %}
+                                </button>
+                                <input type="checkbox" name="bold_{{ ph.id }}" {% if ph.bold %}checked{% endif %} hidden>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-toggle {% if ph.italic %}btn-success{% else %}btn-danger{% endif %}" onclick="toggle(this, 'italic_{{ ph.id }}')">
+                                    {% if ph.italic %}On{% else %}Off{% endif %}
+                                </button>
+                                <input type="checkbox" name="italic_{{ ph.id }}" {% if ph.italic %}checked{% endif %} hidden>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-toggle {% if ph.underline %}btn-success{% else %}btn-danger{% endif %}" onclick="toggle(this, 'underline_{{ ph.id }}')">
+                                    {% if ph.underline %}On{% else %}Off{% endif %}
+                                </button>
+                                <input type="checkbox" name="underline_{{ ph.id }}" {% if ph.underline %}checked{% endif %} hidden>
+                            </td>
+                            <td>
+                                <select class="form-select" name="casing_{{ ph.id }}" style="background: rgba(255, 255, 255, 0.08); border-color: var(--muted); color: var(--text);">
+                                    <option value="none" {% if ph.casing == 'none' %}selected{% endif %}>None</option>
+                                    <option value="upper" {% if ph.casing == 'upper' %}selected{% endif %}>Uppercase</option>
+                                    <option value="lower" {% if ph.casing == 'lower' %}selected{% endif %}>Lowercase</option>
+                                    <option value="title" {% if ph.casing == 'title' %}selected{% endif %}>Title Case</option>
+                                </select>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <button type="submit" class="btn btn-primary mt-4">Update Template</button>
+    </form>
+
+    <script>
+        function toggle(button, inputId) {
+            const input = document.getElementsByName(inputId)[0];
+            button.classList.toggle('btn-success');
+            button.classList.toggle('btn-danger');
+            button.textContent = button.classList.contains('btn-success') ? 'On' : 'Off';
+            input.checked = button.classList.contains('btn-success');
+            button.classList.add('animate__pulse');
+            setTimeout(() => button.classList.remove('animate__pulse'), 500);
+        }
+
+        (function() {
+            'use strict';
+            const forms = document.querySelectorAll('.needs-validation');
+            forms.forEach(form => {
+                form.addEventListener('submit', e => {
+                    if (!form.checkValidity()) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        form.querySelectorAll('.form-control:invalid').forEach(input => {
+                            input.classList.add('animate__shakeX');
+                            setTimeout(() => input.classList.remove('animate__shakeX'), 500);
+                        });
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
+{% endblock %}
