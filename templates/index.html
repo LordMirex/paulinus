@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+ch{% extends 'base.html' %}
 {% block content %}
 <div class="animate__fadeInUp">
     <h1 class="mb-4" style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem;">Document Generator</h1>
@@ -25,18 +25,33 @@
     <!-- Error Message -->
     <div id="error_message" class="alert alert-danger rounded-3 p-2 mb-4 d-none"></div>
 
+    <!-- Batch Processing Card -->
+    <div class="card mb-4" style="background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(255,255,255,0.1);">
+        <div class="card-body text-center">
+            <h5 class="card-title" style="color: rgba(255,255,255,0.95); font-family: 'Cormorant Garamond', serif;">
+                🚀 New: Batch Document Generation
+            </h5>
+            <p class="card-text text-muted">
+                Generate multiple documents at once with a single form. Select multiple templates, fill one form, and download all documents as a ZIP file.
+            </p>
+            <a href="/batch" class="btn btn-lg" 
+               style="padding: 0.75rem 2rem; background: linear-gradient(45deg, #22c55e, #16a34a); color: white; border: none; border-radius: 8px; font-weight: 600; text-decoration: none; transition: all 0.3s ease;"
+               onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 8px 25px rgba(34, 197, 94, 0.3)'"
+               onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">
+                Try Batch Generation
+            </a>
+        </div>
+    </div>
+
     <!-- Recent Documents Table -->
     <h2 class="mt-5 mb-4" style="font-family: 'Cormorant Garamond', serif; font-size: 2rem;">Recent Documents</h2>
-    <div class="mt-4 mb-4">
-        <a href="https://convertio.co/docx-pdf/" target="_blank" style="display: inline-block; padding: 0.6rem 1.5rem; background: linear-gradient(45deg, #6dd5ed, #2a8bf2); color: white; border-radius: 4px; text-decoration: none; transition: all 0.3s ease; border: 1px solid rgba(109, 213, 237, 0.3); font-size: 1rem;" onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 4px 15px rgba(109, 213, 237, 0.3)'" onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">Convert to PDF</a>
-    </div>
     <div class="table-responsive">
     <table class="table table-dark table-hover rounded-3 overflow-hidden">
     <thead>
         <tr>
             <th>File Name</th>
             <th>Document Type</th>
-            <th>Download</th>
+            <th>Download Options</th>
             <th>Delete</th>
         </tr>
     </thead>
@@ -48,10 +63,22 @@
             <td style="padding: 12px 15px; color: rgba(255,255,255,0.9); font-size: 0.95rem; border-right: 1px solid rgba(255,255,255,0.05);">{{ doc.file_path }}</td>
             <td style="padding: 12px 15px; color: rgba(255,255,255,0.8); font-size: 0.9rem; border-right: 1px solid rgba(255,255,255,0.05);">{{ doc.template.type|capitalize }}</td>
             <td style="padding: 12px 15px;">
-                <a href="{{ url_for('download', document_id=doc.id) }}"
-                   style="display: inline-block; padding: 0.4rem 1.2rem; background: linear-gradient(45deg, #6dd5ed, #2a8bf2); color: white; border-radius: 4px; text-decoration: none; transition: all 0.3s ease; border: 1px solid rgba(109, 213, 237, 0.3); font-size: 0.85rem;"
-                   onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 4px 15px rgba(109, 213, 237, 0.3)'"
-                   onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'">Download</a>
+                <div class="d-flex gap-2">
+                    <a href="{{ url_for('download_docx', doc_id=doc.id) }}"
+                       style="display: inline-block; padding: 0.4rem 0.8rem; background: linear-gradient(45deg, #6dd5ed, #2a8bf2); color: white; border-radius: 4px; text-decoration: none; transition: all 0.3s ease; border: 1px solid rgba(109, 213, 237, 0.3); font-size: 0.8rem; min-width: 60px; text-align: center;"
+                       onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 4px 15px rgba(109, 213, 237, 0.3)'"
+                       onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'"
+                       title="Download as DOCX">
+                        <i class="fas fa-file-word"></i> DOCX
+                    </a>
+                    <a href="{{ url_for('download_pdf', doc_id=doc.id) }}"
+                       style="display: inline-block; padding: 0.4rem 0.8rem; background: linear-gradient(45deg, #f43f5e, #dc2626); color: white; border-radius: 4px; text-decoration: none; transition: all 0.3s ease; border: 1px solid rgba(244, 63, 94, 0.3); font-size: 0.8rem; min-width: 60px; text-align: center;"
+                       onmouseover="this.style.transform='scale(1.05)'; this.style.boxShadow='0 4px 15px rgba(244, 63, 94, 0.3)'"
+                       onmouseout="this.style.transform='scale(1)'; this.style.boxShadow='none'"
+                       title="Download as PDF">
+                        <i class="fas fa-file-pdf"></i> PDF
+                    </a>
+                </div>
             </td>
             <td style="padding: 12px 15px;">
                 <a href="{{ url_for('delete', document_id=doc.id) }}"

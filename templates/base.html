@@ -247,11 +247,16 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
             MyTypist
         </a>
         <div>
-            {% if request.path == '/' %}
+            {% if 'batch' in request.path %}
+                <a href="/" class="btn nav-btn">Home</a>
+            {% elif request.path == '/' %}
+                <a href="/batch" class="btn nav-btn me-2" style="background: linear-gradient(45deg, #22c55e, #16a34a);">Batch Generate</a>
                 <a href="/admin?key={{ admin_key }}" class="btn nav-btn">Admin Portal</a>
             {% elif '/admin/edit' in request.path %}
                 <a href="/admin?key={{ admin_key }}" class="btn nav-btn">Back to Admin</a>
             {% elif 'admin' in request.path %}
+                <a href="/" class="btn nav-btn">Home</a>
+            {% elif '/create' in request.path %}
                 <a href="/" class="btn nav-btn">Home</a>
             {% endif %}
         </div>

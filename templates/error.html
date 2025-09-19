@@ -1,8 +1,24 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="text-center animate__fadeInUp">
-        <h1 class="mb-4" style="font-family: 'Cormorant Garamond', serif; font-size: 2.5rem;">Oops! An Error Occurred</h1>
-        <div class="alert alert-danger rounded-3 p-4 mb-4" style="max-width: 600px; margin-left: auto; margin-right: auto;">{{ message }}</div>
-        <a href="{{ url_for('index') }}" class="btn btn-primary">Return to Home</a>
+<div class="animate__fadeInUp text-center">
+    <div class="alert alert-danger" role="alert" style="background: rgba(244, 63, 94, 0.2); border-color: rgba(244, 63, 94, 0.3); color: #fb7185;">
+        <h4 class="alert-heading">
+            <i class="fas fa-exclamation-triangle"></i> Error
+        </h4>
+        <p>{{ message }}</p>
+        <hr>
+        <p class="mb-0">Please try again or contact support if the problem persists.</p>
     </div>
+    
+    <div class="mt-4">
+        <a href="/" class="btn btn-primary me-2" 
+           style="background: linear-gradient(45deg, #6dd5ed, #2a8bf2); border: none; padding: 0.75rem 2rem;">
+            <i class="fas fa-home"></i> Back to Home
+        </a>
+        <button onclick="history.back()" class="btn btn-secondary"
+                style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); padding: 0.75rem 2rem;">
+            <i class="fas fa-arrow-left"></i> Go Back
+        </button>
+    </div>
+</div>
 {% endblock %}
